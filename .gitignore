@@ -1,3 +1,4 @@
 quartett
 *.o
 .DS_Store
+build/

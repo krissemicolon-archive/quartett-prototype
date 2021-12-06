@@ -1,0 +1,17 @@
+schema (
+    - name
+    - cpu
+    - keyboard
+)
+
+card (
+    - X220
+    - i7
+    - half-sized
+)
+
+card (
+    - X60
+    - Duo-Core
+    - half-sized
+)
