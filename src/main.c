@@ -4,6 +4,7 @@
 #include "parser.h"
 #include "hashtable.h"
 #include "linked.h"
+#include "util.h"
 
 int main() {
     ht *ht = ht_create();
@@ -12,8 +13,9 @@ int main() {
     ht_set(ht, "cpu", "i7");
     ht_set(ht, "keyboard", "half-sized");
 
-    node *head = create_node(ht);
-    ht_dump(head->data);
+    linked *list = init_linked(ht);
+
+    ht_dump(list->head->data);
 
     return 0;
 }

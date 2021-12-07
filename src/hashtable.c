@@ -5,7 +5,6 @@
 
 #include "hashtable.h"
 
-
 unsigned int hash(const char *key) {
     unsigned long int value = 0;
     unsigned int i = 0;

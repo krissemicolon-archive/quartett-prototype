@@ -7,9 +7,15 @@
 #include "tokens.h"
 #include "util.h"
 
+#define MAX_SCHEMA_SIZE 16
+#define SCHEMA_BUF_SIZE 64
+
 void parse() {
-    char buffer[64];
+    char buffer[SCHEMA_BUF_SIZE];
     token current = None;
+    char schema[MAX_SCHEMA_SIZE][SCHEMA_BUF_SIZE];
+    size_t schema_size = 0;
+    size_t schema_current = 0;
     bool in_schema = false;
     bool in_card = false;
     bool in_set = false;
@@ -43,12 +49,29 @@ void parse() {
         } else if(in_schema || in_card || in_set) {
             if(in_schema && in_set) {
                 printf("Schema Set: %s\n", buffer);
+                strcpy(schema[schema_size], buffer);
+                schema_size++;
             }
             if(in_card && in_set) {
                 printf("Card Set: %s\n", buffer);
+                if(schema_current < schema_size) {
+                    schema_current++;
+                } else {
+                    schema_current = 0;
+                }
             }
         } else {
             eputs("Error (Cards Parser): Invalid Token");
         }
+    }
+
+    if(schema_current != 0) {
+        eputs("Error (Cards Parser): Schema Was Filled Inexpectedly");
+    }
+
+    // TODO: Optimize with schema_current
+    // filling keys
+    for(int i = 0; i < schema_size; i++) {
+        
     }
 }
