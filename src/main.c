@@ -3,15 +3,17 @@
 
 #include "parser.h"
 #include "hashtable.h"
+#include "linked.h"
 
 int main() {
-    hashtable *ht = ht_create();
+    ht *ht = ht_create();
 
-    ht_set(ht, "key1", "car");
-    ht_set(ht, "key2", "house");
-    ht_set(ht, "key3", "painting");
+    ht_set(ht, "name", "X220");
+    ht_set(ht, "cpu", "i7");
+    ht_set(ht, "keyboard", "half-sized");
 
-    ht_dump(ht);
+    node *head = create_node(ht);
+    ht_dump(head->data);
 
     return 0;
 }

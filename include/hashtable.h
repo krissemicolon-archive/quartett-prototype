@@ -11,23 +11,14 @@ typedef struct ht_entry {
 
 typedef struct {
     ht_entry **entries;
-} hashtable;
+} ht;
 
 unsigned int hash(const char *);
 ht_entry *ht_pair(const char *, const char *);
-void ht_set(hashtable *, const char *, const char *);
-char *ht_get(hashtable *, const char *);
-hashtable *ht_create(void);
-void ht_dump(hashtable *);
-
+ht *ht_create(void);
+void ht_set(ht *, const char *, const char *);
+char *ht_get(ht *, const char *);
+void ht_del(ht *, const char *);
+void ht_dump(ht *);
 
 #endif
-
-/* struct Node { */
-/*     char *key; */
-/*     char *value; */
-/*     struct Node* next; */
-/* }; */
-/*  */
-/* struct Node; */
-/* typedef struct Node Node; */
