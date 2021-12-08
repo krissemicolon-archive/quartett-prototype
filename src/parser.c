@@ -56,12 +56,10 @@ linked *parse() {
                 break;
             }
         } else if(in_schema || in_card || in_set) {
-            // logic for schema
             if(in_schema && in_set) {
                 strcpy(schema[schema_size], buffer);
                 schema_size++;
             }
-            // logic for set statement
             if(in_card && in_set) {
                 if(schema_filled) append_node(list, ht_create());
                 ht_set(list->tail->data, schema[schema_current], buffer);
