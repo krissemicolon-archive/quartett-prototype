@@ -21,5 +21,5 @@ linked *init_linked(ht *data) {
 }
 
 void append_node(linked *l, ht *data) {
-    l->tail->next = create_node(data);
+    l->tail = l->tail->next = create_node(data);
 }
