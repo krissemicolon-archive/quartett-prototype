@@ -5,13 +5,13 @@ schema (
 )
 
 card (
-    - X220
+    - X230
     - i7
-    - half-sized
+    - chiclet
 )
 
 card (
     - X60
     - Duo-Core
-    - half-sized
+    - classic
 )

@@ -3,13 +3,13 @@
 
 // stderr fputs wrapper
 void eputs(char *s) {
-    fputs(s, stderr);
+    fprintf(stderr, "%s\n", s);
 }
 
 // simple null checking procedure
 void nullcheck(void *ptr, char *msg) {
     if(ptr == NULL) {
-        fprintf(stderr, "Error (Unexpected Null Value): %s", msg);
+        fprintf(stderr, "Error (Unexpected Null Value): %s\n", msg);
         exit(1);
     }
 }

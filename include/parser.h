@@ -1,6 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-void parse();
+#include "linked.h"
+
+linked *parse();
 
 #endif

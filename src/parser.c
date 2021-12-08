@@ -5,59 +5,73 @@
 
 #include "config.h"
 #include "tokens.h"
+#include "hashtable.h"
+#include "linked.h"
 #include "util.h"
 
-#define MAX_SCHEMA_SIZE 16
-#define SCHEMA_BUF_SIZE 64
-
-void parse() {
+linked *parse() {
     char buffer[SCHEMA_BUF_SIZE];
     token current = None;
     char schema[MAX_SCHEMA_SIZE][SCHEMA_BUF_SIZE];
-    size_t schema_size = 0;
-    size_t schema_current = 0;
+    short schema_size = 0;
+    short schema_current = 0;
+    bool schema_filled = false;
     bool in_schema = false;
     bool in_card = false;
     bool in_set = false;
+    linked *list = init_linked(ht_create());
 
     FILE *cards = fopen(CARDS_CONFIG, "r");
     nullcheck(cards, "Card Configuration File Path");
 
     while(fscanf(cards, "%s", &buffer) == true) {
         // validating tokens and assigning them to current token enum
-        if(strcmp(buffer, SCHEMA) == 0) {
-            current = Schema;
-        } else if(strcmp(buffer, CARD) == 0) {
-            current = Card;
-        } else if(strcmp(buffer, LPAREN) == 0) {
-            current = Lparen;
-        } else if(strcmp(buffer, RPAREN) == 0) {
-            current = Rparen;
-        } else if(strcmp(buffer, SET) == 0) {
-            current = Set;
-        } else {
-            current = None;
-        }
+             if(strcmp(buffer, SCHEMA)  == 0)   { current = Schema; }
+        else if(strcmp(buffer, CARD)    == 0)   { current = Card;   }
+        else if(strcmp(buffer, LPAREN)  == 0)   { current = Lparen; }
+        else if(strcmp(buffer, RPAREN)  == 0)   { current = Rparen; }
+        else if(strcmp(buffer, SET)     == 0)   { current = Set;    }
+        else                                    { current = None;   }
 
         if(current != None) {
-            if(current == Schema) in_schema = true;
-            if(current == Card)   in_card = true;
-            if(current == Set)    in_set = true;
-            if(current == Rparen) {
-                in_schema = in_card = in_set = false;
+            switch(current) {
+                case Schema:
+                    in_schema = true;
+                break;
+                
+                case Card:
+                    in_card = true;
+                break;
+
+                case Set:
+                    in_set = true;
+                break;
+
+                case Rparen:
+                    in_schema = in_card = in_set = false;
+                break;
+
+                default:
+                    continue;
+                break;
             }
         } else if(in_schema || in_card || in_set) {
+            // logic for schema
             if(in_schema && in_set) {
-                printf("Schema Set: %s\n", buffer);
                 strcpy(schema[schema_size], buffer);
                 schema_size++;
             }
+            // logic for set statement
             if(in_card && in_set) {
-                printf("Card Set: %s\n", buffer);
-                if(schema_current < schema_size) {
+                if(schema_filled) append_node(list, ht_create());
+                ht_set(list->tail->data, schema[schema_current], buffer);
+
+                if(schema_current < schema_size - 1) {
                     schema_current++;
+                    if(schema_filled) schema_filled = false;
                 } else {
                     schema_current = 0;
+                    if(!schema_filled) schema_filled = true;
                 }
             }
         } else {
@@ -65,13 +79,7 @@ void parse() {
         }
     }
 
-    if(schema_current != 0) {
-        eputs("Error (Cards Parser): Schema Was Filled Inexpectedly");
-    }
+    if(schema_current != 0) eputs("Error (Cards Parser): Set Statements Don't Match Schema");
 
-    // TODO: Optimize with schema_current
-    // filling keys
-    for(int i = 0; i < schema_size; i++) {
-        
-    }
+    return list;
 }

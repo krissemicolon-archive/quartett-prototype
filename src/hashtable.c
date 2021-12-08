@@ -37,7 +37,7 @@ ht_entry *ht_pair(const char *key, const char *value) {
     return entry;
 }
 
-ht *ht_create(void) {
+ht *ht_create() {
     // allocate table
     ht *hashtable = malloc(sizeof(ht) * 1);
 
@@ -176,10 +176,10 @@ void ht_dump(ht *hashtable) {
             continue;
         }
 
-        printf("slot[%4d]: ", i);
+        printf("slot [%4d] = ", i);
 
         for(;;) {
-            printf("%s=%s ", entry->key, entry->value);
+            printf("\tkey:\t%s\n\t\tvalue:\t%s", entry->key, entry->value);
 
             if (entry->next == NULL) {
                 break;
